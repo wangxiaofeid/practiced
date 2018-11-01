@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+  div{
+    padding: 30px;
+  }
+  </style>
+</head>
+<body>
+  <div class="div" id="id1">
+    id1
+    <div class="div" id="id2">
+      id2
+      <div class="div" id="id3">
+        id3
+      </div>
+    </div>
+  </div>
+  <script>
+    var id1 = document.getElementById('id1');
+    var id2 = document.getElementById('id2');
+    var id3 = document.getElementById('id3');
+    var body = document.getElementsByTagName('body')[0];
+    // true表示捕获，false表示冒泡
+    var b = true;
+    // e.stopPropagation(); 阻止事件派发，不管是冒泡还是捕获
+    body.addEventListener('click', function(e) { console.log('body', e) }, false)
+    id1.addEventListener('click', function(e) { console.log('id1') }, b)
+    id2.addEventListener('click', function(e) { console.log('id2') }, b)
+    id3.addEventListener('click', function(e) { console.log('id3') }, b)
+  </script>
+</body>
+</html>

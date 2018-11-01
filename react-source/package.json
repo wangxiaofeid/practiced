@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "babel-preset-env": "^1.7.0",
+    "@babel/plugin-transform-react-jsx": "^7.0.0"
+  }
+}

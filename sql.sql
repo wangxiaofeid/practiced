@@ -1,0 +1,1 @@
+select ds, offline, velocity from (select ds, count as velocity from platformtool.cleandata_metrics_log_dt where type='velocity') as v,(select ds, count as offline from platformtool.cleandata_metrics_log_dt where type='offline') as o where o.ds=v.ds

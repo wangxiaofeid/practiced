@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>gzip</title>
+  <script>
+    /**
+     * eg: aaaabbbfffeeegggewfffwfggrrwewfftwqwyyyrrffe33ddfyy6554eeftytwt43ttttttt
+     * **/
+    function findMin(map) {
+      let min = Infinity;
+      let minKey = '';
+      for (const key in map) {
+        if (map[key].num < min) {
+          min = map[key].num;
+          minKey = key
+        }
+      }
+      minItem = map[minKey];
+      delete map[minKey];
+      minItem.key = minKey;
+      return minItem
+    }
+
+    function getTree(map) {
+      const tree = {};
+
+      while (Object.keys(map).length > 1) {
+        const min1 = findMin(map), min2 = findMin(map);
+        map[`${min1.key}-${min2.key}`] = {
+          num: min1.num + min2.num,
+          left: min1,
+          right: min2
+        }
+      }
+
+      const loop = function(treeMap, s) {
+        if (treeMap.value) {
+          tree[treeMap.value] = s;
+        } else {
+          if (treeMap.left) {
+            loop(treeMap.left, `${s}0`)
+          }
+          if (treeMap.right) {
+            loop(treeMap.right, `${s}1`)
+          }
+        }
+      }
+      loop(map[Object.keys(map)[0]], '');
+      console.log(tree);
+      return tree;
+    }
+    function findAllIndex(str, item) {
+      const back = [];
+      for (let i = 0; i < str.length; i++) {
+        if (str[i] == item) {
+          back.push(i);
+        }
+      }
+      return back;
+    }
+
+    function doGzip(str, num) {
+      // LZ77
+      const newStr = [];
+      for (let i = 0; i < str.length;) {
+        const item = str[i];
+        const oldStr = str.slice(0, i);
+        let indexs = findAllIndex(oldStr, item);
+        if (indexs.length == 0) {
+          newStr.push(item);
+          i++;
+          continue;
+        }
+        let k = 1;
+        let bestIndex = indexs[0];
+        while (true) {
+          const finds = indexs.map(ind => str[i + k] && oldStr[ind + k] && str[i + k] == oldStr[ind + k] ? ind : false);
+          if (finds.findIndex(fin => fin !== false) != -1) {
+            indexs = finds.filter(item => item !== false);
+            bestIndex = indexs[0];
+          } else {
+            break;
+          }
+          k++;
+        }
+        if (k >= num) {
+          newStr.push(`(${bestIndex},${k})`);
+          i += k;
+        } else {
+          newStr.push(item);
+          i += 1;
+        }
+      }
+
+      // Huffman
+      const strMap = {};
+      const newStrArr = newStr.join('').split('');
+      for (let i = 0; i < newStrArr.length; i++) {
+        const item = newStrArr[i];
+        if (strMap[item]) {
+          strMap[item].num += 1
+        } else {
+          strMap[item] = {
+            num: 1,
+            value: item
+          };
+        }
+      }
+      const replaceMap = getTree(strMap);
+      for (let i = 0; i < newStrArr.length; i++) {
+        newStrArr[i] = replaceMap[newStrArr[i]]
+      }
+      console.log(newStrArr.join(''));
+      const fReplaceMap = {};
+      for (const key in replaceMap) {
+        fReplaceMap[replaceMap[key]] = key;
+      }
+      return JSON.stringify({
+        d: newStrArr.join(''),
+        m: fReplaceMap
+      });
+    }
+
+    function doUnGzip(str) {
+      // 反Huffman
+      const innStr = JSON.parse(str);
+      let cacheStr = '';
+      const unHuffmanStr = []
+      for (let i = 0; i < innStr.d.length; i++) {
+        cacheStr += innStr.d[i];
+        if (innStr.m[cacheStr]) {
+          unHuffmanStr.push(innStr.m[cacheStr]);
+          cacheStr = '';
+        }
+      }
+
+      const newStr = [];
+      let beginNum = '', endNum = null;
+      for (let i = 0; i < unHuffmanStr.length; i++) {
+        const item = unHuffmanStr[i];
+        if (item == '(') {
+          let k = 1;
+          beginNum = '';
+          endNum = null;
+          while (true) {
+            const s = unHuffmanStr[i + k];
+            if (s == ',') {
+              endNum = '';
+            } else if (s == ')') {
+              const num1 = parseInt(beginNum), num2 = parseInt(endNum);
+              Array.prototype.push.apply(newStr, newStr.slice(num1, num1 + num2));
+              i = i + k;
+              break;
+            } else if (endNum === null) {
+              beginNum += s;
+            } else {
+              endNum += s
+            }
+            k++;
+          }
+        }else {
+          newStr.push(item);
+        }
+      }
+      return newStr.join('');
+    }
+
+    function gzip() {
+      const str = document.getElementById('xx').value;
+      console.log(str);
+      document.getElementById('show').innerHTML = doGzip(str, 2);
+    }
+
+    function unGzip() {
+      const str = document.getElementById('xx').value;
+      console.log(str);
+      document.getElementById('show').innerHTML = doUnGzip(str);
+    }
+
+  </script>
+</head>
+<body>
+  <textarea name="" id="xx" cols="30" rows="10"></textarea>
+  <button onclick="gzip()">gzip</button>
+  <button onclick="unGzip()">unGzip</button>
+  <div id="show"></div>
+</body>
+</html>
