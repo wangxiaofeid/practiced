@@ -8,6 +8,10 @@
   <script>
     /**
      * eg: aaaabbbfffeeegggewfffwfggrrwewfftwqwyyyrrffe33ddfyy6554eeftytwt43ttttttt
+     * 
+     * 没有做的一部分是二进制与字符的互转
+     * 二进制-->字符  String.fromCharCode(parseInt('1100001', 2))
+     * 字符-->二进制  'a'.charCodeAt().toString(2)
      * **/
     function findMin(map) {
       let min = Infinity;

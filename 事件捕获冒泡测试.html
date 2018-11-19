@@ -29,7 +29,7 @@
     // true表示捕获，false表示冒泡
     var b = true;
     // e.stopPropagation(); 阻止事件派发，不管是冒泡还是捕获
-    body.addEventListener('click', function(e) { console.log('body', e) }, false)
+    body.addEventListener('click', function(e) { console.log('body', e) }, b)
     id1.addEventListener('click', function(e) { console.log('id1') }, b)
     id2.addEventListener('click', function(e) { console.log('id2') }, b)
     id3.addEventListener('click', function(e) { console.log('id3') }, b)
