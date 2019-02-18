@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<script>
+
+class classA{
+  constructor() {
+    console.log(1);
+  }
+
+  static a() {
+    console.log(2);
+  }
+
+  b() {
+    console.log(3);
+  }
+}
+
+// console.log(classA);
+
+const newClassA = new classA();
+
+// <!-- ------- -->
+function F() {
+  this.a = 'a'
+}
+F.prototype = {
+  a: function() {
+    console.log('a');
+  },
+  b: function() {
+    console.log('a');
+  }
+}
+
+var f = new F();
+
+console.log(`Function.prototype === Function.__proto__: ${Function.prototype === Function.__proto__}`);  //函数式函数本身new出来的
+
+console.log(`Function.prototype.__proto__ === Object.prototype: ${Function.prototype.__proto__ === Object.prototype}`);  //函数式函数本身new出来的
+
+console.log(`Object.__proto__ === Function.prototype: ${Object.__proto__ === Function.prototype}`); // Object是函数new出来的
+
+
+console.log(`Object.__proto__ === Function.__proto__: ${Object.__proto__ === Function.__proto__}`); // Object是函数new出来的
+
+console.log(`f.__proto__ === F.prototype: ${f.__proto__ === F.prototype}`);  // 自定义函数式Function new出来的
+
+console.log(`f.__proto__.__proto__ === Object.prototype: ${f.__proto__.__proto__ === Object.prototype}`);
+
+console.log(`Object.prototype.__proto__ === null: ${Object.prototype.__proto__ === null}`);
+
+var a = {};   // 对象是Object new出来的
+var b = new Object();
+console.log(`{}.__proto__ === (new Object).__proto__: ${a.__proto__ === b.__proto__}`);
+
+// <!-- ------- -->
+// 鸟对象
+var bird = {
+    name: "bird",
+
+    fly: function () {
+        console.log("fly");
+    }
+}
+var eagle = Object.create(bird); // 创建一个以bird为原型的实例对象
+console.log(`eagle.__proto__ === bird: ${eagle.__proto__ === bird}`);
+
+
+/*
+Function.prototype --> Function.__proto__
+Function.__proto__ --> Function.prototype
+Function.prototype.__proto__ --> Object.prototype
+
+Object.prototype --> new Object() and set __proto__ to null
+Object.__proto__ --> Function.prototype
+Object.prototype.__proto__ --> null
+
+fun.prototype --> new Object()
+fun.__proto__ --> Function.prototype
+fun.prototype.__proto__ --> Object.prototype
+
+newFun.__proto__ --> fun.prototype
+
+newObject.__proto__ --> Object.prototype
+*/
+</script>
+</body>
+</html>

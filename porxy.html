@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>porxy</title>
+</head>
+<body>
+<script>
+  var data = {
+    a: 123,
+    b: 'hhdfd'
+  }
+  var dataP = new Proxy(data, {
+    get: (obj, props) => {
+      console.log('get', obj, props);
+      return obj[props] + 1
+    },
+    set: (obj, props, value) => {
+      console.log('set', obj, props, value);
+      obj[props] = value
+    }
+  })
+
+  console.log(dataP.a, dataP.b);
+  dataP.a = 333;
+  console.log(dataP, data);
+
+  // 当前时间循环太长会使setTimeout的执行时间远远大于1秒
+  console.log(Date.now());
+  setTimeout(() => {
+    console.log(Date.now());
+  }, 1000);
+  for (let index = 0; index < 10000; index++) {
+    console.log('11');
+  }
+</script>
+</body>
+</html>

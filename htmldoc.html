@@ -1,0 +1,48 @@
+<!-- 
+  <!DOCTYPE html>  标准模式
+  HTML4.01 Strict的DOCTYPE会触发标准模式：<!DOCTYPE HTML PUBLIC “-//W3C//DTD HTML 4.01//EN””http://www.w3.org/TR/html4/strict.dtd”>
+  HTML4.01 Transitional的DOCTYPE会触发近似标准模式：<!DOCTYPE HTML PUBLIC"-//W3C//DTD HTML 4.01 Transitional//EN""http://www.w3.org/TR/html4/loose.dtd">
+  无DOCTYPE或者DOCTYPE格式不正确   怪异模式
+ -->
+<!-- 
+怪异模式与标准模式：
+  怪异模式使用不同于标准的盒模型（也就相当于 IE8+ 下的：box-sizing: border-box）
+  怪异模式下某些行内（inline）元素的垂直对齐行为表现怪异：怪异模式下对齐图片至包含它们的盒子的下边框，而 标准模式图片对其到父盒的 baseline
+接近标准模式（有限怪异模式）与标准模式：
+  主要区别即为上面的第 2 点
+-->
+
+<!-- 
+  标准模式和怪异模式的区别？
+1、width不同
+　　在标准模式中：width是内容（content）宽度，元素真正的宽度是外边距、内边距、边框宽度的和，即元素宽度 = margin-left + border-left-width + padding-left + width + padding-right + border-right-width + margin-right。
+　　在怪异模式中：width则是元素的实际宽度，width = border-left-width + padding-left+ 内容(content)宽度 + padding-right + border-right-width。
+2、内联元素的尺寸
+　　标准模式中，给span等行内元素设置width和height都不会生效，而在怪异模式下，却会生效。
+3、可设置百分比的高度
+　　在标准模式下，一个元素的高度由其包含的内容content决定，如果父元素没有设置高度，子元素设置一个百分比高度是无效的。
+4、用margin : 0 auto设置水平居中
+　　在标准模式下可以使元素水平居中，但是在怪异模式下，无效，可以用text-align : center;来实现居中。
+5、怪异模式下设置图片的padding会失效
+6、怪异模式下table中的字体属性不能继承上层的设置
+7、元素溢出的处理
+　　标准模式下，overflow默认去visible，在怪异模式下，溢出会被当做扩展box来对待，溢出不会裁减，元素框自动调整大小，能够包含溢出内容。
+-->
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Page Title</title>
+</head>
+<body>
+  <div style="border:1px solid #333;vertical-align: middle;">
+    <span>
+      <span style="border:1px solid #999">xxxx</span>
+      <div style="border:1px solid #999;display: inline-block">XXX服务器fffggg</div>
+      xxxGGGe各个
+      <img style="border:1px solid #999" src="http://static.zybuluo.com/yangfch3/yes5apeozng4x0j3xpjj3ubi/image_1ba7m7h67t731ikr1461topakgm.png" alt="">
+    </span>
+  </div>
+</body>
+</html>

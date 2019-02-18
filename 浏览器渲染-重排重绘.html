@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>测试页</title>
+  <style>
+    #box {
+      width: 109px;
+      height: 100px;
+      background-color: lightsteelblue;
+      border-style: solid;
+    }
+  </style>
+</head>
+<body>
+  <div id="box"></div>
+</body>
+<script>
+  /*
+    https://juejin.im/post/5c0ced5ef265da616720242c  分开操作style并没有什么用
+    http://taobaofed.org/blog/2016/04/25/performance-composite/
+  */ 
+ 
+var box = document.getElementById('box');
+var toggle = 0;
+var time = 500;
+function toggleFun() {
+  var borderWidth = toggle ? 20 : 0;
+  var borderColor = toggle ? 'coral' : 'transparent';
+  if (toggle) {
+    box.style.borderWidth = '50px';
+    box.style.borderColor = borderColor;
+    var i = 0;
+    while(i < 100) {
+      box.style.borderWidth = i + 'px';
+      i++
+    }
+    box.style.borderWidth = borderWidth + 'px';
+  } else {
+    box.style.cssText = 'border: ' + borderWidth + 'px solid' + borderColor;
+  }
+  Promise.resolve().then(function() {
+    box.style.borderWidth = Math.random()*100+'px';
+    box.style.borderColor = 'red';
+  });
+  setTimeout(() => {
+    box.style.borderWidth = Math.random()*100+'px';
+    box.style.borderColor = 'yellow';
+  }, 30)
+  toggle = toggle ? 0 : 1;
+}
+setInterval(toggleFun, time)
+</script>
+</html>

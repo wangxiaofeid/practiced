@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Event Loop</title>
+</head>
+<body>
+<script>
+  /*
+    https://segmentfault.com/a/1190000014940904?utm_source=tag-newest
+  */ 
+  console.log('script start');
+
+  window.onload = function() {
+    console.log('window load start');
+
+    setTimeout(() => {
+      console.log('setTimeout');
+    }, 0);
+
+    new Promise(function(resolve, reject) {
+      console.log('Promise');
+      resolve();
+    }).then(function() {
+      console.log('Promise then');
+    })
+
+    Promise.resolve().then(function() {
+      console.log('Promise then2');
+    });
+
+    console.log('window load end');
+  }
+
+  console.log('script end');
+</script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+
+    Function.prototype.bindFun = function bind(){
+      if(typeof this !== 'function'){
+          throw new TypeError(this + ' must be a function');
+      }
+      const [that, ...args] = arguments;
+      that.__proto__.func = this;
+      return function() {
+        that.func(...[...args, ...arguments]);
+      }
+    }
+
+    function fun(a, b, c) {
+      console.log('this', this);
+      console.log(a, b, c, this.a, this.b, this.c);
+    }
+
+    function fun2(a, b, c) {
+      this.a = a;
+      this.b = b;
+      this.c = c;
+    }
+
+    const obj = new fun2(4, 5, 6);
+
+    const newFun = fun.bindFun(obj, 1, 2);
+
+    newFun(3);
+  </script>
+</body>
+</html>

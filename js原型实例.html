@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+<script>
+
+function Foo() {  //定义了一个名叫Foo的函数
+  getName = function () { alert (1); };   //(1)函数内定义了一个函数变量
+  return this;
+}     
+Foo.getName = function () { alert (2);};  //(2)创建了Foo的静态属性
+Foo.prototype.getName = function () { alert (3);};  //(3)定义了Foo函数原型对象上的getName函数
+var getName = function () { alert (4);};  //(4)通过函数变量表达式定义了一个叫getName的函数
+function getName() { alert (5);}   //(5)声明了一个getName函数
+
+//请写出以下输出结果：
+Foo.getName();   // 2  对象下函数调用
+getName();       // 4  变量定义和函数定义声明提前
+Foo().getName(); // 1  Foo()返回 window, 且内部对 getName 重新复制
+getName();       // 1  同上
+new Foo.getName();       // 2  成员访问运算符(.)的优先级大于new,小括号()的优先级又大于(.) 
+new Foo().getName();     // 3  new的优先级较高
+new (Foo().getName)();   // 1  同上
+new new Foo().getName(); // 3  类似于new Foo.prototype.getName()
+
+</script>
+</body>
+</html>
