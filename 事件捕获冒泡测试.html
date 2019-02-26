@@ -33,6 +33,38 @@
     id1.addEventListener('click', function(e) { console.log('id1') }, b)
     id2.addEventListener('click', function(e) { console.log('id2') }, b)
     id3.addEventListener('click', function(e) { console.log('id3') }, b)
+
+  </script>
+  <script>
+    // 防抖
+    function debounce(fun, time) {
+      let sto = null;
+      return function() {
+        clearTimeout(sto);
+        sto = setTimeout(() => {
+          fun()
+        }, time);
+      }
+    }
+    // 节流
+    function throttling(fun, time, maxTime) {
+      let startTime = 0, sto = null;
+      return function() {
+        if (startTime == 0) {
+          startTime = Date.now();
+        }
+        const timeNow = Date.now();
+        if (timeNow - startTime > maxTime) {
+          startTime = timeNow;
+          fun();
+        } else {
+          clearTimeout(sto);
+          sto = setTimeout(() => {
+            fun()
+          }, time);
+        }
+      }
+    }
   </script>
 </body>
 </html>
