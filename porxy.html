@@ -36,5 +36,141 @@
     console.log('11');
   }
 </script>
+<script>
+/**
+ * @param {string[]} A
+ * @return {string[]}
+ */
+ var commonChars = function(A) {
+   if (A.length == 0) {
+     return []
+   }
+   var back = A[0];
+    for (let i = 1; i < A.length; i++) {
+      var item = A[i];
+      for (let j = 0; j < item.length; j++) {
+        
+      }
+    }
+  };
+
+
+/**
+ * @param {character[][]} grid
+ * @return {number}
+ */
+ var numIslands = function(grid) {
+     if (grid.length <= 0 || grid[0].length < 0){
+         return 0
+     }
+     var back = 0;
+     function doXX(arr, i, j) {
+        if (i < 0 || j < 0 || i > arr.length - 1 || j > arr[0].length - 1) {
+            return
+        }
+        if (arr[i][j] == 1) {
+            arr[i][j] = 0;
+            doXX(arr, i - 1, j);
+            doXX(arr, i, j - 1);
+            doXX(arr, i + 1, j);
+            doXX(arr, i, j + 1);
+        }
+    }
+    for (let i = 0; i < grid.length; i++) {
+        for (let j = 0; j < grid[i].length; j++) {
+            if (grid[i][j] == 1) {
+                back++;
+                doXX(grid, i, j);
+            } 
+        }
+    }
+    return back
+};
+numIslands([]);
+
+/**
+ * @param {character[][]} board
+ * @return {void} Do not return anything, modify board in-place instead.
+ */
+var solve = function(board) {
+    if (!board || board.length < 0 || board && board[0] && grid[0].length < 0){
+        return 0
+    }
+    var mapO = {};
+    function doXX(i, j) {
+        if (mapO[`${i}-${j}`] || i < 0 || j < 0 || i > board.length - 1 || j > board[0].length - 1) {
+            return
+        }
+        if (arr[i][j] == 'O') {
+            mapO[`${i}-${j}`] = true;
+            doXX(arr, i - 1, j);
+            doXX(arr, i, j - 1);
+            doXX(arr, i + 1, j);
+            doXX(arr, i, j + 1);
+        }
+    }
+    for (let i = 0; i < board.length; i++) {
+      doXX(i, 0);
+      doXX(i, board[0].length - 1);
+    }
+    for (let i = 1; i < board[0].length - 1; i++) {
+      doXX(0, i);
+      doXX(board.length - 1, i);
+    }
+    for (let i = 0; i < board.length; i++) {
+      for (let j = 0; j < board[i].length; j++) {
+        if (board[i][j] == 'O' && !mapO[`${i}-${j}`]) {
+          board[i][j] = 'X';
+        }
+      }
+    }
+};
+/**
+ * @param {number[]} nums
+ * @return {number}
+ */
+ var rob = function(nums) {
+    if (nums.length <= 0) {
+        return 0
+    }
+    if (nums.length <= 2) {
+        return Math.max(...nums)
+    }
+    return Math.max(nums[0] + rob(nums.slice(2, nums.length)), nums[1] + rob(nums.slice(3, nums.length)))
+};
+console.log(rob([1,2,1,1]))
+
+
+/**
+ * Definition for a binary tree node.
+ * function TreeNode(val) {
+ *     this.val = val;
+ *     this.left = this.right = null;
+ * }
+ */
+/**
+ * @param {TreeNode} root
+ * @return {number[]}
+ */
+ var rightSideView = function(root) {
+    if (!root) {
+        return []
+    }
+    var left = rightSideView(root.left);
+    var right = rightSideView(root.right);
+    console.log(left, right, [root.val, ...right, left.slice(left.length, right.length)]);
+    if (left.length > right.length) {
+      return [root.val, ...right, ...left.slice(left.length, right.length)]
+    } else {
+      return [root.val, ...right]
+    }
+};
+console.log(rightSideView({
+  val: 1,
+  left: {
+    val: 2
+  }
+}))
+</script>
 </body>
 </html>
